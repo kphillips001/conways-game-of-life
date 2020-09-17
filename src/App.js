@@ -15,7 +15,26 @@ function App() {
 
   console.log(grid);
   
-  return <div> Testing </div>
+  return (
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: `repeat(${numCols}, 20px)`
+    }}>
+      {grid.map((rows, i) =>
+        rows.map((col, k) => (
+          <div 
+          key={`${i}-${k}`}
+            style={{
+              width: 20,
+              height: 20,
+              backgroundColr: grid[i][k] ? "pink" : undefined,
+              border: 'solid 1px black'
+            }}
+          />
+        ))
+      )}
+    </div>
+  )
   
 }
 
