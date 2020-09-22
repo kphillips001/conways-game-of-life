@@ -1,11 +1,14 @@
 import React from 'react';
-import Game from './components/Game'
+import Header from './components/Header';
+import Game from './components/Game';
+import Rules from './components/Rules';
 
-
-function App() {
+const App = ()  => {
   return (
     <div className='App'>
+      <Header />
       <Game />
+      <Rules />
     </div>
   )
 }
