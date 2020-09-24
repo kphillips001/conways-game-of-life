@@ -1,3 +1,22 @@
+.btn {
+  height: 2em;
+  width: 120px;
+  border-radius: 5px;
+  background: black;
+  color: white;
+  margin: 1%;
+  border: none;
+  font-size: 12px;
+}
+
+.gridContainer {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 .rulesContainer {
   display: flex;
   justify-content: center;
@@ -22,4 +41,12 @@
   width: 80%;
   flex-direction: column;
   margin: 2%;
+}
+
+.gameplay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
 }

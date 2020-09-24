@@ -2,21 +2,23 @@ import React, {useState, useCallback, useRef} from 'react';
 import produce from 'immer';
 import operations from './Operations';
 
-const numRows = 30;
-const numCols = 30;
-
-const generateEmptyGrid = () => {
-  const rows = [];
-  for (let i = 0; i < numRows; i++) {
-    rows.push(Array.from(Array(numCols), () => 0));
-  }
-
-  return rows;
-};
-
 const Game = () => {
+  const numRows = 30;
+  const numCols = 30;
+  const [gen, setGen] = useState(0)
+  
+  const emptyGrid = () => {
+    const rows = [];
+    for (let i = 0; i < numRows; i++) {
+      rows.push(Array.from(Array(numCols), () => 0));
+    }
+    setGen(0)
+    return rows;
+  };
+
+  const [speed, setSpeed] = useState(500);
   const [grid, setGrid] = useState(() => {
-    return generateEmptyGrid()
+    return emptyGrid()
     
   });
 
@@ -27,7 +29,7 @@ const Game = () => {
   runningRef.current = running
 
   //run simulation -> don't want to change on every render so use useCallback hook
-  const runSimulation = useCallback(() => {
+  const runGame = useCallback(() => {
     if (!runningRef.current) {
       return;
     }
@@ -62,23 +64,31 @@ const Game = () => {
       })
     });
 
-   setTimeout(runSimulation, 100);
-  }, [])
+    setGen(prevState => prevState + 1)
+    setTimeout(runGame, speed);
+  }, [speed])
   
   return (
     <>
+      <div className='gridContainer'>
+        <div className="gameplay">
+          <h3>Generation: {gen}</h3>
+          <h3>Speed:{speed === 500 ? "0.5s" : "1s"}</h3>
+        </div>
       <button
+       className="btn"
         onClick={() => {
           setRunning(!running)
           if(!running){
             runningRef.current = true;
-            runSimulation()
+            runGame()
           }
         }}
       > 
         {running ? 'stop' : 'start'} 
       </button>
       <button
+        className="btn"
         onClick={() => {
           const rows = [];
           for (let i = 0; i < numRows; i++) {
@@ -92,11 +102,27 @@ const Game = () => {
       >
         Random
       </button>
-      <button onClick={() => {
-        setGrid(generateEmptyGrid());
+      <button 
+        className="btn"
+        onClick={() => {
+        setGrid(emptyGrid());
         }} 
       >
         Clear
+      </button>
+      <button
+        className="btn"
+        onClick={() => {
+          if (speed === 500) {
+            setSpeed(1000);
+             // console.log(speed)
+            } else {
+              setSpeed(500);
+             // console.log(speed)
+            }
+           }}
+          >
+          {speed === 500 ? "Slower" : "Faster"}
       </button>
       <div style={{
         display: 'grid',
@@ -124,9 +150,9 @@ const Game = () => {
         ))
       )}
       </div>
+      </div>
     </>
   )
-  
 }
 
 export default Game;
