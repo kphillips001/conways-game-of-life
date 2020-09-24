@@ -8,10 +8,10 @@ const Rules = () => {
             <h4>The Game of Life is a cellular automaton where each cell in a typically two-dimensional grid can have two different states, "alive" or "dead". Each cell's behavior is based on it's eight surrounding neighbors, and each generation of the grid is a pure function of the previous grid state.</h4>
             <p>For each generation, the grid transitions based on the following rules:</p>
             <ul>
-                <li >If a cell is dead and has less than 2 live neighbors, it dies, as if by underpopulation.</li>
-                <li>If a cell is dead and has exactly 3 live neighbors, it becomes alive, as if by reproduction.</li>
-                <li>If a cell is alive and has more than 3 live neighbors, it dies, as if by overpopulation.</li>
-                <li>If a cell is alive and has 2 or 3 live neighbors, it remains alive.</li>
+                <li>Any live cell with fewer than two live neighbours dies, as if by underpopulation.</li>
+                <li>Any live cell with two or three live neighbours lives on to the next generation.</li>
+                <li>Any live cell with more than three live neighbours dies, as if by overpopulation.</li>
+                <li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</li>
             </ul>
         </div>
     )

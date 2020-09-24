@@ -1,3 +1,10 @@
+.App {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
 .btn {
   height: 2em;
   width: 120px;
@@ -8,6 +15,14 @@
   border: none;
   font-size: 12px;
 }
+
+.gameGrid {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2%;
+}
+
 
 .btnContainer {
   width: 80%;
@@ -52,7 +67,7 @@
 
 .gameplay {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   flex-direction: row;
   width: 100%;
