@@ -80,8 +80,7 @@ const Game = () => {
       <div className="gridContainer">
          <div className="gameplay">
            <h3>Generation: {gen}</h3>
-           <h3>Grid: {numCols === 25 ? "25x25" : "10x10"} </h3>
-           <h3>Speed:{speed === 500 ? "0.5s" : "1s"}</h3>
+            <h3>Speed:{speed === 500 ? "0.5s" : "1s"}</h3>
          </div>
           <div
             className="gameGrid"
@@ -104,7 +103,7 @@ const Game = () => {
                   style={{
                     width: 20,
                     height: 20,
-                    backgroundColor: grid[i][k] ? "black" : undefined,
+                    backgroundColor: grid[i][k] ? "red" : undefined,
                     border: "1px solid black",
                   }}
                 />
