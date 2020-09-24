@@ -1,71 +1,88 @@
 import React, { useState, useCallback, useRef } from 'react';
 import produce from 'immer';
-import "../App.css";
-import operations from "./Operations"
-
 
 const Game = () => {
-    // const [dimension, setDimension] = useState(25)
-    const numRows = 30;
-    const numCols= 30;
-    const [gen, setGen] = useState(0);
-    const [run, setRun] = useState(false);
-    const emptyGrid = () => {
-        const rows = [];
-        for (let i = 0; i < numRows; i++) {
-            rows.push(Array.from(Array(numCols), () => 0));
-        }
-        setGen(0)
-        return rows;
+   
+  const operations = [
+    [0, 1],
+    [0, -1],
+    [1, -1],
+    [-1, 1],
+    [1, 1],
+    [-1, -1],
+    [1, 0],
+    [-1, 0]
+  ];
+
+  const numRows = 30;
+  const numCols= 30;
+  const [gen, setGen] = useState(0);
+  const [run, setRun] = useState(false);
+  const emptyGrid = () => {
+  const rows = [];
+    for (let i = 0; i < numRows; i++) {
+      rows.push(Array.from(Array(numCols), () => 0));
     }
-    const [speed, setSpeed] = useState(500);
-    const [grid, setGrid] = useState(() => {
-        return emptyGrid()
-    });
-    const runRef = useRef();
-    runRef.current = run
+    setGen(0)
+    return rows;
+    };
 
-    const runGame = useCallback(() => {
-        if (!runRef.current) {
-            return;
+  const [speed, setSpeed] = useState(500);
+  const [grid, setGrid] = useState(() => {
+   return emptyGrid()
+  });
+
+  //running value changes but function does not - store in const
+  const runRef = useRef();
+  runRef.current = run
+
+  //run simulation -> don't want to change on every render so use useCallback hook
+  const runGame = useCallback(() => {
+    if (!runRef.current) {
+      return;
+    }
+  
+    setGrid(g => {
+      //iterates through the entire grid 
+      return produce(g, gridCopy => {
+        for (let i = 0; i < numRows; i++) {
+          for (let k = 0; k < numCols; k++) {
+      
+            //computes the neighbors  
+            let neighbors = 0;
+            operations.forEach(([x, y]) => {
+            const newI = i + x;
+            const newK = k + y;
+
+            // checking the bounds of the grid
+            if (newI >= 0 && newI < numRows && newK >= 0 && newK < numCols) {
+             //if have a live cell => add ones to the neighbors    
+             neighbors += g[newI][newK]
+            }
+          })
+          // determines what happens to the cells
+          if (neighbors < 2 || neighbors > 3) {
+            gridCopy[i][k] = 0;
+          } else if (g[i][k] === 0 && neighbors === 3) {
+             //mutates grid copy, produce produces new grid & updates setGrid  
+             gridCopy[i][k] = 1;
+          }
         }
-        setGrid(g => {
-            return produce(g, gridCopy => {
-                for (let i = 0; i < numRows; i++) {
-                    for (let k = 0; k < numCols; k++) {
-                        let neighbors = 0;
-                        operations.forEach(([x, y]) => {
-                            const newI = i + x;
-                            const newK = k + y;
-                            // checking the bounds of the grid
-                            // if we have a live call = 1, it adds one to the neighbors
-                            if (newI >= 0 && newI < numRows && newK >= 0 && newK < numCols) {
-                                neighbors += g[newI][newK]
-                            }
-                        })
-                        // determines what happens to the cells
-                        if (neighbors < 2 || neighbors > 3) {
-                            gridCopy[i][k] = 0;
-                        } else if (g[i][k] === 0 && neighbors === 3) {
-                            gridCopy[i][k] = 1;
-                        }
-                    }
-                }
-            })
-        })
-        setGen(prevState => prevState + 1)
-        setTimeout(runGame, speed);
-        console.log(speed)
-    }, [{speed}]);
+      }
+      })
+    })
+    setGen(prevState => prevState + 1)
+    setTimeout(runGame, speed);
+  }, [{speed}]);
 
-    return (
-      <>
-        <div className="gridContainer">
-          <div className="gameplay">
-            <h3>Generation: {gen}</h3>
-            <h3>Grid: {numCols === 25 ? "25x25" : "10x10"} </h3>
-            <h3>Speed:{speed === 500 ? "0.5s" : "1s"}</h3>
-          </div>
+  return (
+    <>
+      <div className="gridContainer">
+         <div className="gameplay">
+           <h3>Generation: {gen}</h3>
+           <h3>Grid: {numCols === 25 ? "25x25" : "10x10"} </h3>
+           <h3>Speed:{speed === 500 ? "0.5s" : "1s"}</h3>
+         </div>
           <div
             className="gameGrid"
             style={{
