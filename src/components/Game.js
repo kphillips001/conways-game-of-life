@@ -17,12 +17,11 @@ const Game = () => {
   };
 
   const [speed, setSpeed] = useState(500);
+  const [running, setRunning] = useState(false);
   const [grid, setGrid] = useState(() => {
     return emptyGrid()
     
   });
-
-  const [running, setRunning] = useState(false);
 
   //running value changes but function does not - store in const
   const runningRef = useRef(running);
@@ -71,10 +70,11 @@ const Game = () => {
   return (
     <>
       <div className='gridContainer'>
-        <div className="gameplay">
+        <div className='gameplay'>
           <h3>Generation: {gen}</h3>
           <h3>Speed:{speed === 500 ? "0.5s" : "1s"}</h3>
         </div>
+      <div className='btnContainer'>
       <button
        className="btn"
         onClick={() => {
@@ -115,15 +115,14 @@ const Game = () => {
         onClick={() => {
           if (speed === 500) {
             setSpeed(1000);
-             // console.log(speed)
             } else {
               setSpeed(500);
-             // console.log(speed)
             }
            }}
           >
           {speed === 500 ? "Slower" : "Faster"}
       </button>
+      </div>
       <div style={{
         display: 'grid',
         gridTemplateColumns: `repeat(${numCols}, 20px)`
@@ -149,6 +148,7 @@ const Game = () => {
           />
         ))
       )}
+      
       </div>
       </div>
     </>
@@ -156,3 +156,4 @@ const Game = () => {
 }
 
 export default Game;
+
