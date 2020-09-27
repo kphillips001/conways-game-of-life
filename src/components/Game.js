@@ -3,6 +3,7 @@ import produce from 'immer';
 
 const Game = () => {
    
+  //represents location of the neighbors 
   const operations = [
     [0, 1],
     [0, -1],
